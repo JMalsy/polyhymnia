@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#000000"/>
+  <path d="M84 256h344" stroke="#1f1f1f" stroke-width="10"/>
+  <text x="112" y="296" fill="#ffffff" font-family="Courier New, monospace" font-size="112" letter-spacing="0">s</text>
+  <text x="196" y="296" fill="#ff3b3b" font-family="Courier New, monospace" font-size="112" letter-spacing="0">p</text>
+  <text x="280" y="296" fill="#ffffff" font-family="Courier New, monospace" font-size="112" letter-spacing="0">d</text>
+</svg>

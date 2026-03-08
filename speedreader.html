@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#000000"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Polyhymnia"/>
+<meta name="format-detection" content="telephone=no"/>
+<link rel="manifest" href="./manifest.webmanifest"/>
+<link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
+<title>Polyhymnia</title>
+
+<style>
+  :root{
+    --bg:#000;
+    --fg:#fff;
+    --accent:#ff3b3b;
+    --anchor:12%;
+  }
+
+  html,body{
+    min-height:100%;
+    margin:0;
+    background:var(--bg);
+    color:var(--fg);
+    font-family: "Consolas","Courier New",monospace;
+  }
+
+  .wrap{
+    min-height:100dvh;
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    gap:14px;
+    padding:
+      calc(env(safe-area-inset-top) + 16px)
+      calc(env(safe-area-inset-right) + 16px)
+      calc(env(safe-area-inset-bottom) + 16px)
+      calc(env(safe-area-inset-left) + 16px);
+    box-sizing:border-box;
+  }
+
+  textarea{
+    width:100%;
+    min-height:120px;
+    resize:vertical;
+    background:#0b0b0b;
+    color:var(--fg);
+    border:1px solid #222;
+    border-radius:10px;
+    padding:12px;
+    font-size:16px;
+    line-height:1.35;
+    outline:none;
+    box-sizing:border-box;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+
+  .display{
+    position:relative;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    border:1px solid #151515;
+    background:#050505;
+    overflow:hidden;
+  }
+
+  /* ====== WORD RENDERING (pixel-stable pivot) ====== */
+  .word{
+    position:relative;
+    width:100%;
+    height:140px;
+    font-size:clamp(40px,6vw,96px);
+    user-select:none;
+    white-space:nowrap;
+
+    /* critical: kill kerning/ligatures that can create uneven gaps */
+    font-family:"Consolas","Courier New",monospace;
+    font-variant-ligatures:none;
+    font-feature-settings:"liga" 0, "kern" 0;
+    letter-spacing:0;
+  }
+
+  @media (max-width: 600px){
+    :root{
+      --anchor:10%;
+    }
+
+    .wrap{
+      gap:10px;
+      padding:
+        calc(env(safe-area-inset-top) + 12px)
+        calc(env(safe-area-inset-right) + 12px)
+        calc(env(safe-area-inset-bottom) + 12px)
+        calc(env(safe-area-inset-left) + 12px);
+    }
+
+    .word{
+      font-size:clamp(32px,10vw,72px);
+    }
+  }
+
+  @media (max-width: 420px){
+    :root{
+      --anchor:8%;
+    }
+  }
+
+  /* first letter (cell immediately left of pivot cell) */
+  .left{
+    position:absolute;
+    left:calc(var(--anchor) - 1.5ch);
+    width:1ch;
+    text-align:center;
+    white-space:pre;
+  }
+
+  /* pivot (2nd letter) locked on screen anchor, but aligned to 1ch cell */
+  .pivot{
+    position:absolute;
+    left:var(--anchor);
+    transform:translateX(-0.5ch);
+    width:1ch;
+    text-align:center;
+    color:var(--accent);
+    white-space:pre;
+  }
+
+  /* rest of the word begins in the cell immediately right of pivot cell */
+  .right{
+    position:absolute;
+    left:calc(var(--anchor) + 0.5ch);
+    white-space:pre;
+  }
+
+  .controls{
+    display:grid;
+    gap:10px;
+    border:1px solid #151515;
+    background:#070707;
+    border-radius:14px;
+    padding:12px;
+  }
+
+  .row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .meta{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:#cfcfcf;
+    opacity:0.9;
+  }
+
+  .hint{
+    font-size:12px;
+    color:#a9a9a9;
+  }
+
+  .kbd{
+    border:1px solid #333;
+    background:#0f0f0f;
+    border-radius:6px;
+    padding:1px 6px;
+    font-size:12px;
+    color:#ddd;
+  }
+
+  button{
+    background:#121212;
+    color:var(--fg);
+    border:1px solid #2a2a2a;
+    border-radius:12px;
+    padding:10px 14px;
+    min-height:44px;
+    font-size:16px;
+    cursor:pointer;
+    touch-action:manipulation;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+  button:hover{ border-color:#444; }
+  button:disabled{ opacity:0.5; cursor:not-allowed; }
+
+  input[type="range"]{
+    width:min(520px,100%);
+    touch-action:pan-x;
+  }
+
+  @supports not (min-height:100dvh){
+    .wrap{
+      min-height:100vh;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <textarea id="input" placeholder="Paste your text here..."></textarea>
+
+    <div class="display" aria-live="polite">
+      <div class="word" id="word">
+        <span class="left" id="left"></span>
+        <span class="pivot" id="pivot"></span>
+        <span class="right" id="right"></span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="row">
+        <div class="meta">
+          <div>WPM: <strong id="wpmLabel">300</strong></div>
+          <div>Word: <strong id="idxLabel">0</strong>/<span id="totalLabel">0</span></div>
+          <div>Status: <strong id="statusLabel">Stopped</strong></div>
+        </div>
+        <div class="hint">
+          <span class="kbd">Space</span> pause/resume • <span class="kbd">R</span> reset
+        </div>
+      </div>
+
+      <div class="row">
+        <input id="wpm" type="range" min="60" max="1200" step="10" value="300" />
+      </div>
+
+      <div class="row">
+        <button id="clear">Clear</button>
+        <button id="start">Start</button>
+        <button id="back10" disabled>Back 10</button>
+        <button id="pause" disabled>Pause</button>
+        <button id="reset" disabled>Reset</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const input = document.getElementById('input');
+  const leftEl = document.getElementById('left');
+  const pivotEl = document.getElementById('pivot');
+  const rightEl = document.getElementById('right');
+
+  const wpm = document.getElementById('wpm');
+  const wpmLabel = document.getElementById('wpmLabel');
+  const idxLabel = document.getElementById('idxLabel');
+  const totalLabel = document.getElementById('totalLabel');
+  const statusLabel = document.getElementById('statusLabel');
+
+  const startBtn = document.getElementById('start');
+  const clearBtn = document.getElementById('clear');
+  const back10Btn = document.getElementById('back10');
+  const pauseBtn = document.getElementById('pause');
+  const resetBtn = document.getElementById('reset');
+
+  let words = [];
+  let idx = 0;
+  let timer = null;
+  let running = false;
+
+  function tokenize(text) {
+    return text
+      .replace(/\u00A0/g, ' ')
+      .split(/\s+/)
+      .map(w => w.trim())
+      .filter(Boolean);
+  }
+
+  function setStatus(s){ statusLabel.textContent = s; }
+
+  function setWordDisplay(word) {
+    const a = word ?? "";
+    const first  = a.slice(0, 1);
+    const second = a.length >= 2 ? a.slice(1, 2) : "";
+    const rest   = a.length >= 3 ? a.slice(2) : "";
+
+    leftEl.textContent  = first;
+    pivotEl.textContent = second;
+    rightEl.textContent = rest;
+  }
+
+  function updateMeta(){
+    wpmLabel.textContent = wpm.value;
+    idxLabel.textContent = String(Math.min(idx, words.length));
+    totalLabel.textContent = String(words.length);
+  }
+
+  function intervalMs(){
+    const val = Number(wpm.value) || 300;
+    return Math.max(10, Math.round(60000 / val));
+  }
+
+  function stopTimer(){
+    if (timer) clearInterval(timer);
+    timer = null;
+    running = false;
+  }
+
+  function startTimer(){
+    stopTimer();
+    running = true;
+    timer = setInterval(tick, intervalMs());
+  }
+
+  function tick(){
+    if (idx >= words.length) {
+      stopTimer();
+      setStatus("Finished");
+      pauseBtn.disabled = true;
+      return;
+    }
+    setWordDisplay(words[idx]);
+    idx++;
+    updateMeta();
+  }
+
+  function reset(){
+    stopTimer();
+    idx = 0;
+    setWordDisplay("");
+    updateMeta();
+    setStatus("Stopped");
+    pauseBtn.textContent = "Pause";
+    back10Btn.disabled = true;
+    pauseBtn.disabled = true;
+    resetBtn.disabled = true;
+    startBtn.disabled = false;
+  }
+
+  function clearInput(){
+    input.value = "";
+    reset();
+    input.focus();
+  }
+
+  function jumpBack(amount = 10){
+    if (!words.length) return;
+
+    const currentWordIndex = Math.max(0, idx - 1);
+    idx = Math.max(0, currentWordIndex - amount);
+    setWordDisplay(words[idx] ?? "");
+    idx += words.length ? 1 : 0;
+    updateMeta();
+
+    if (!running) {
+      setStatus("Paused");
+    }
+  }
+
+  function start(){
+    words = tokenize(input.value);
+    idx = 0;
+    updateMeta();
+
+    if (words.length === 0) {
+      setStatus("No text");
+      return;
+    }
+
+    setStatus("Running");
+    startBtn.disabled = true;
+    back10Btn.disabled = false;
+    pauseBtn.disabled = false;
+    resetBtn.disabled = false;
+
+    tick();       // show immediately
+    startTimer(); // then continue
+  }
+
+  function togglePause(){
+    if (!words.length) return;
+
+    if (running) {
+      stopTimer();
+      setStatus("Paused");
+      pauseBtn.textContent = "Resume";
+    } else {
+      setStatus("Running");
+      pauseBtn.textContent = "Pause";
+      startTimer();
+    }
+  }
+
+  clearBtn.addEventListener('click', clearInput);
+  startBtn.addEventListener('click', start);
+  back10Btn.addEventListener('click', () => jumpBack(10));
+  pauseBtn.addEventListener('click', togglePause);
+  resetBtn.addEventListener('click', reset);
+
+  wpm.addEventListener('input', () => {
+    updateMeta();
+    if (running) startTimer(); // apply speed change immediately
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (!pauseBtn.disabled) togglePause();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (!back10Btn.disabled) jumpBack(10);
+    } else if (e.key.toLowerCase() === 'r') {
+      if (!resetBtn.disabled) reset();
+    }
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+    });
+  }
+
+  reset();
+})();
+</script>
+</body>
+</html>

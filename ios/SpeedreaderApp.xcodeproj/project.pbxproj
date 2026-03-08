@@ -1,0 +1,231 @@
+// !$*UTF8*$!
+{
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5A2F000B2C10000100000001 /* SpeedreaderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F00012C10000100000001 /* SpeedreaderApp.swift */; };
+		5A2F000C2C10000100000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F00022C10000100000001 /* ContentView.swift */; };
+		5A2F000D2C10000100000001 /* ReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2F00032C10000100000001 /* ReaderWebView.swift */; };
+		5A2F000E2C10000100000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F00042C10000100000001 /* Assets.xcassets */; };
+		5A2F000F2C10000100000001 /* speedreader.html in Resources */ = {isa = PBXBuildFile; fileRef = 5A2F00062C10000100000001 /* speedreader.html */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5A2F00012C10000100000001 /* SpeedreaderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedreaderApp.swift; sourceTree = "<group>"; };
+		5A2F00022C10000100000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5A2F00032C10000100000001 /* ReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderWebView.swift; sourceTree = "<group>"; };
+		5A2F00042C10000100000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5A2F00052C10000100000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A2F00062C10000100000001 /* speedreader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = speedreader.html; sourceTree = "<group>"; };
+		5A2F00072C10000100000001 /* Speedreader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Speedreader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5A2F00112C10000100000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5A2F00132C10000100000001 = {
+			isa = PBXGroup;
+			children = (
+				5A2F00142C10000100000001 /* SpeedreaderApp */,
+				5A2F00152C10000100000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5A2F00142C10000100000001 /* SpeedreaderApp */ = {
+			isa = PBXGroup;
+			path = SpeedreaderApp;
+			sourceTree = "<group>";
+			children = (
+				5A2F00012C10000100000001 /* SpeedreaderApp.swift */,
+				5A2F00022C10000100000001 /* ContentView.swift */,
+				5A2F00032C10000100000001 /* ReaderWebView.swift */,
+				5A2F00042C10000100000001 /* Assets.xcassets */,
+				5A2F00162C10000100000001 /* Resources */,
+				5A2F00052C10000100000001 /* Info.plist */,
+			);
+		};
+		5A2F00152C10000100000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5A2F00072C10000100000001 /* Speedreader.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5A2F00162C10000100000001 /* Resources */ = {
+			isa = PBXGroup;
+			path = Resources;
+			sourceTree = "<group>";
+			children = (
+				5A2F00062C10000100000001 /* speedreader.html */,
+			);
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5A2F00172C10000100000001 /* Speedreader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5A2F001A2C10000100000001 /* Build configuration list for PBXNativeTarget "Speedreader" */;
+			buildPhases = (
+				5A2F00182C10000100000001 /* Sources */,
+				5A2F00112C10000100000001 /* Frameworks */,
+				5A2F00192C10000100000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Speedreader;
+			productName = Speedreader;
+			productReference = 5A2F00072C10000100000001 /* Speedreader.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5A2F001B2C10000100000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					5A2F00172C10000100000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 5A2F001E2C10000100000001 /* Build configuration list for PBXProject "SpeedreaderApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5A2F00132C10000100000001;
+			productRefGroup = 5A2F00152C10000100000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5A2F00172C10000100000001 /* Speedreader */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5A2F00192C10000100000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A2F000E2C10000100000001 /* Assets.xcassets in Resources */,
+				5A2F000F2C10000100000001 /* speedreader.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5A2F00182C10000100000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A2F000B2C10000100000001 /* SpeedreaderApp.swift in Sources */,
+				5A2F000C2C10000100000001 /* ContentView.swift in Sources */,
+				5A2F000D2C10000100000001 /* ReaderWebView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5A2F001C2C10000100000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SpeedreaderApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.Speedreader;
+				PRODUCT_NAME = Polyhymnia;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		5A2F001D2C10000100000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SpeedreaderApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.Speedreader;
+				PRODUCT_NAME = Polyhymnia;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5A2F001A2C10000100000001 /* Build configuration list for PBXNativeTarget "Speedreader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A2F001C2C10000100000001 /* Debug */,
+				5A2F001D2C10000100000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5A2F001E2C10000100000001 /* Build configuration list for PBXProject "SpeedreaderApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A2F001C2C10000100000001 /* Debug */,
+				5A2F001D2C10000100000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5A2F001B2C10000100000001 /* Project object */;
+}
